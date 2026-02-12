@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sporty-consumer
+  namespace: sporty
+spec:
+  # H2 is in-memory; keep single replica to avoid divergent state per pod.
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sporty-consumer
+  template:
+    metadata:
+      labels:
+        app: sporty-consumer
+    spec:
+      containers:
+      - name: sporty-consumer
+        image: sporty-consumer:latest
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: 500m
+            memory: 512Mi
+          limits:
+            cpu: 1
+            memory: 1Gi
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "default"
+        - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+          value: "sporty-kafka-bootstrap:9092"
+        - name: ROCKETMQ_NAME_SERVER
+          value: "sporty-rocketmq:9876"
+        ports:
+        - containerPort: 8082

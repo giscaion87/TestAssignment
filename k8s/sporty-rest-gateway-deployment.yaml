@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sporty-rest-gateway
+  namespace: sporty
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sporty-rest-gateway
+  template:
+    metadata:
+      labels:
+        app: sporty-rest-gateway
+    spec:
+      containers:
+      - name: sporty-rest-gateway
+        image: sporty-rest-gateway:latest
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: 500m
+            memory: 512Mi
+          limits:
+            cpu: 1
+            memory: 1Gi
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "default"

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sporty-consumer-service
+  namespace: sporty
+spec:
+  selector:
+    app: sporty-consumer
+  ports:
+  - name: http
+    port: 8082
+    targetPort: 8082

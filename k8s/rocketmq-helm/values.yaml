@@ -1,0 +1,44 @@
+# RocketMQ Helm values override
+#
+# Fill in based on the official chart's values.yaml once you vendor the chart.
+# This file is intentionally minimal to keep config in-repo.
+#
+nameserver:
+  fullnameOverride: "sporty-rocketmq"
+  replicaCount: 1
+  image:
+    repository: "apache/rocketmq"
+    tag: "5.2.0"
+    pullPolicy: IfNotPresent
+  heapSize: "256M"
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+broker:
+  replicaCount: 1
+  fullnameOverride: "sporty-rocketmq-broker"
+  image:
+    pullPolicy: IfNotPresent
+    repository: "apache/rocketmq"
+    tag: "5.2.0"
+  jvmMemory: " -Xms256m -Xmx256m -Xmn128m -XX:MaxDirectMemorySize=128m "
+  config: |
+    autoCreateTopicEnable=true
+  resources:
+    requests:
+      cpu: 500m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 1536Mi
+
+controller:
+  replicas: 0
+
+proxy:
+  replicaCount: 0

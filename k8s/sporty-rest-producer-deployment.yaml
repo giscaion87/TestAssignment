@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sporty-rest-producer
+  namespace: sporty
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sporty-rest-producer
+  template:
+    metadata:
+      labels:
+        app: sporty-rest-producer
+    spec:
+      containers:
+      - name: sporty-rest-producer
+        image: sporty-rest-producer:latest
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: 500m
+            memory: 512Mi
+          limits:
+            cpu: 1
+            memory: 1Gi
+        ports:
+        - containerPort: 8081
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "default"
+        - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+          value: "sporty-kafka-bootstrap:9092"
