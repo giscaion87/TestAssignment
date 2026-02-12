@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package sporty.consumer.proto;
+
+option java_package = "sporty.consumer.proto";
+option java_multiple_files = true;
+option java_outer_classname = "BetSettlementProtos";
+
+message BetSettlement {
+  string bet_id = 1;
+  string user_id = 2;
+  string amount = 3;
+}

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package sporty.restproducer.proto;
+
+option java_package = "sporty.restproducer.proto";
+option java_multiple_files = true;
+option java_outer_classname = "EventProtos";
+
+message Event {
+  string event_id = 1;
+  string event_name = 2;
+  string event_winner_id = 3;
+}
