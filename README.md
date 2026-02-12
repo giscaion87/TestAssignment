@@ -2,6 +2,23 @@
 
 This repository contains the Sporty test stack (gateway, producer, consumer) plus Kubernetes manifests for the `sporty` namespace.
 
+## Prerequisites
+
+- Kubernetes cluster is running and your current `kubectl` context points to it (for local setup: Docker Desktop Kubernetes enabled).
+- `docker` is installed and running.
+- `kubectl` is installed.
+- `helm` (v3+) is installed.
+- Optional for load tests: `wrk`.
+
+Quick preflight:
+
+```bash
+kubectl cluster-info
+kubectl get nodes
+docker info
+helm version
+```
+
 ## Architecture
 
 Request flow (happy path):
@@ -20,7 +37,7 @@ Request flow (happy path):
 ```
 
 Notes:
-- Kafka is managed by Strimzi (operator must already be installed).
+- `deploy-local.sh` ensures `ingress-nginx` and Strimzi operator are installed.
 - RocketMQ is installed via Helm using the vendored chart under `k8s/rocketmq-helm/rocketmq`.
 - HPA is pinned to 1 replica for the consumer due to H2 in-memory DB.
 
@@ -104,15 +121,9 @@ Notes:
 - The script reads the JWT from the `JWT_TOKEN` env var.
 - If you change request size limits, ensure the payload in the script still fits.
 
-## Optional direct access (port-forward)
+## Optional ingress access on port 8080
 
-If you want to bypass ingress:
-
-```bash
-kubectl -n sporty port-forward svc/sporty-rest-gateway 8080:8080
-```
-
-If you want to keep using ingress but on port 8080:
+If you want to access ingress on `localhost:8080`:
 
 ```bash
 kubectl -n ingress-nginx port-forward svc/ingress-nginx-controller 8080:80
